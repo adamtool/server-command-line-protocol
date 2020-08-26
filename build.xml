@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="adam_synt" default="jar">
-	<!-- For building the standalone version in libs.res the jars have to start with ${libfolder}/ and have to be put int ${mainfolder}/lib 
-and the classes have to start with ${mainfolder}/ and have to be located from the directory where the build_macros.xml is positioned. -->
+<project name="adam_protocol" default="jar" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	<!-- For building the standalone version: the jars in libs.res have to start with ${libfolder}/ and 
+         the classes have to start with ${dependenciesfolder}, or ${frameworkfolder}. -->
 
-	<dirname property="synt.basedir" file="${ant.file.adam_synt}"/>
+<!--  %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%% -->	
+	<dirname property="protocol.basedir" file="${ant.file.adam_protocol}"/>
 
 <!--  %%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMPORTS %%%%%%%%%%%%%%%%%%%%%%%%%%% -->	
-	<property file="${synt.basedir}/build.properties"/>
-	<import file="${mainfolder}/build_macros.xml" optional="false"/>
-	<include file="${mainfolder}/build_targets.xml" as="synt.fu" optional="false"/>
+    <property name="subproject.basedir" value="${protocol.basedir}"/>
+	<property file="${subproject.basedir}/build.properties" prefix="adam"/>
+    <!-- get the correct folder for the dependencies depending on whether we build it as the main project of as a dependency itselve -->
+    <available file="${adam.dependenciesfolder.asMainProject}/" type="dir" property="isMainProject"/>
+    <available file="${adam.dependenciesfolder.asDependency}" type="dir" property="isDependency"/>
+    <property if:set="isMainProject" name="dependenciesfolder" value="${adam.dependenciesfolder.asMainProject}"/>
+    <property if:set="isDependency" name="dependenciesfolder" value="${adam.dependenciesfolder.asDependency}"/>
+    <!-- now load the property file again to correctly expand the ${dependencyfolder}. Standard ant doesn't allow overwriting properties,
+        thus, we loaded it above with a prefix -->
+	<property file="${subproject.basedir}/build.properties"/>
+
+	<import file="${frameworkfolder}/build_macros.xml" optional="false"/>
+	<include file="${frameworkfolder}/build_targets.xml" as="protocol.fu" optional="false"/>
 
 <!--  %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PATHs %%%%%%%%%%%%%%%%%%%%%%%%%%% -->	
-	<union id="synt.jar.res">    			
-<!--			<zipfileset includes="**/*.class" src="${mainfolder}/lib/apt/apt.jar"/>
-			<zipfileset includes="**/*.stg" src="${mainfolder}/lib/apt/apt.jar"/>
-			<zipfileset includes="**/*.class" src="${mainfolder}/lib/commons-io-2.4/commons-io-2.4.jar"/>
-			<zipfileset includes="**/*.class" src="${logics.basedir}/lib/apt/apt-lib.jar"/>
-			<zipfileset includes="**/*.class" src="${logics.basedir}/lib/apt/apt-io.jar"/>
-			<zipfileset includes="**/*.stg" src="${logics.basedir}/lib/apt/apt-io.jar"/>-->
+	<union id="protocol.jar.res">    			
 	</union>
 
 <!--  %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROPERTIES %%%%%%%%%%%%%%%%%%%%%%%%%%% -->	
@@ -27,46 +32,35 @@ and the classes have to start with ${mainfolder}/ and have to be located from th
 
 <!--  %%%%%%%%%%%%%%%%%%%%%%%%%%%%% DELEGATES %%%%%%%%%%%%%%%%%%%%%%%%%%% -->	
 	<target name="test" depends="loadProperties" description="Runs all tests">
-		<antcall target="synt.fu.test"/>
+		<antcall target="protocol.fu.test"/>
 			<!--<ant antfile="${logics.basedir}/build_logics.xml" target="test"></ant>	-->	
 	</target>
 	<target name="test-method" depends="loadProperties" description="Runs the tests of a specific method">
-		<antcall target="synt.fu.test-method"/>
+		<antcall target="protocol.fu.test-method"/>
 	</target>
 	<target name="test-class" depends="loadProperties" description="Runs the tests of a specific class">
-		<antcall target="synt.fu.test-class"/>
+		<antcall target="protocol.fu.test-class"/>
 	</target>
 	<target name="jar" depends="loadProperties" description="Builds a jar with all its dependencies">
-		<antcall target="synt.fu.jar"/>
+		<antcall target="protocol.fu.jar"/>
 	</target>
 	<target name="jar-standalone" depends="loadProperties" description="Builds a jar with all its dependencies">
-		<antcall target="synt.fu.jar-standalone"/>
+		<antcall target="protocol.fu.jar-standalone"/>
 	</target>
-    <target name="deploy" depends="clean-all,jar-standalone,deploy_protocol" description="Builds a jar with all its dependencies">
-		<jar destfile="adam_synt.jar">
-			<zipfileset includes="**/*.class" src="./adam_synt-standalone.jar"/>
-			<zipfileset includes="**/*.stg" src="./adam_synt-standalone.jar"/>
-		<!--	<zipfileset dir="${libfolder}" includes="quabs_mac" fullpath="lib/quabs_mac"/>
-			<zipfileset dir="${libfolder}" includes="quabs_unix" fullpath="lib/quabs_unix"/>-->
-			<manifest>
-				<attribute name="Main-Class" value="uniolunisaar.adam.main.ui.cl.AdamSynthesizer"/>
-			</manifest>
-		</jar>	
-	</target>
-    <target name="deploy_protocol" depends="clean-all,jar-standalone" description="Builds the server-protocal jar with all its dependencies">
+    <target name="deploy" depends="clean-all" description="Builds the server-protocal jar with all its dependencies">
         <jar destfile="adam_protocol.jar">
-			<fileset dir="classes/" includes="uniolunisaar/adam/ui/cl/serverprotocol/**/*.class"/>
+			<fileset dir="classes/" includes="./**/*.class"/>
 		</jar>
-		<copy file="adam_protocol.jar" tofile="${libfolder}/adam_protocol.jar"/>
+<!--		<copy file="adam_protocol.jar" tofile="${libfolder}/adam_protocol.jar"/>-->
 	</target>
 	<target name="javadoc" depends="loadProperties" description="Creates the JavaDoc of this package.">
-		<antcall target="bounded.fu.javadoc"/>
+		<antcall target="protocol.fu.javadoc"/>
 	</target>
 	<target name="clean" depends="loadProperties" description="Cleans all temporary files.">
-		<antcall target="synt.fu.clean"/>
+		<antcall target="protocol.fu.clean"/>
 	</target>
 	<target name="clean-all" depends="loadProperties" description="Cleans all temporary files including the reports">
-		<antcall target="synt.fu.clean-all"/>
+		<antcall target="protocol.fu.clean-all"/>
 		<delete file="adam_protocol.jar" failonerror="false"/>
 	</target>
 </project>
