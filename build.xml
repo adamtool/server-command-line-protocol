@@ -47,7 +47,7 @@
 	<target name="jar-standalone" depends="loadProperties" description="Builds a jar with all its dependencies">
 		<antcall target="protocol.fu.jar-standalone"/>
 	</target>
-    <target name="deploy" depends="clean-all" description="Builds the server-protocal jar with all its dependencies">
+    <target name="deploy" depends="clean-all,protocol.fu.javac" description="Builds the server-protocal jar with all its dependencies">
         <jar destfile="adam_protocol.jar">
 			<fileset dir="classes/" includes="./**/*.class"/>
 		</jar>
