@@ -4,7 +4,7 @@ DEPENDENCIES_REPOS="git@github.com:adamtool/libs.git,git@github.com:adamtool/fra
 DEPENDENCIES_REV="HEAD,HEAD,HEAD"
 # the build target
 FRAMEWORK_TARGETS = tools
-t=jar
+t=javac
 
 # should be executed no matter if a file with the same name exists or not
 .PHONY: check_dependencies
@@ -16,6 +16,8 @@ t=jar
 .PHONY: protocol
 .PHONY: deploy
 #.PHONY: javadoc
+.PHONY: setJavac
+.PHONY: setJar
 .PHONY: setStandalone
 .PHONY: setDeploy
 .PHONY: setClean
@@ -68,6 +70,9 @@ protocol: check_dependencies
 deploy: $(FRAMEWORK_TARGETS) petrigames setDeploy protocol
 	mkdir -p deploy
 	cp ./adam_protocol.jar ./deploy/adam_protocol.jar
+
+setJavac:
+	$(eval t=javac)
 
 setStandalone:
 	$(eval t=jar-standalone)
