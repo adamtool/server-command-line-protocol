@@ -1,4 +1,4 @@
-package uniolunisaar.adam.ui.cl.serverprotocol.objects;
+package uniolunisaar.adam.ds.synthesis.ui.cl.serverprotocol.objects;
 
 import java.io.Serializable;
 

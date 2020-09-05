@@ -1,4 +1,4 @@
-package uniolunisaar.adam.ui.cl.serverprotocol;
+package uniolunisaar.adam.ds.synthesis.ui.cl.serverprotocol;
 
 /**
  * Specifies the possible parameters a command can have which is handled by the

@@ -1,4 +1,4 @@
-package uniolunisaar.adam.ui.cl.serverprotocol.exceptions;
+package uniolunisaar.adam.exceptions.synthesis.ui.cl.serverprotocol;
 
 /**
  * Exception stating that the given command is not known to the server.
