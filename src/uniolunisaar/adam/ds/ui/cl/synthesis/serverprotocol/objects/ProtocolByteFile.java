@@ -1,4 +1,4 @@
-package uniolunisaar.adam.ds.synthesis.ui.cl.serverprotocol.objects;
+package uniolunisaar.adam.ds.ui.cl.synthesis.serverprotocol.objects;
 
 import java.io.FileInputStream;
 import java.io.IOException;

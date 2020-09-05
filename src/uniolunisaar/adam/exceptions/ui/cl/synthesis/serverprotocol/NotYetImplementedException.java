@@ -1,4 +1,4 @@
-package uniolunisaar.adam.exceptions.synthesis.ui.cl.serverprotocol;
+package uniolunisaar.adam.exceptions.ui.cl.synthesis.serverprotocol;
 
 /**
  * Exception for stating that a given command is not yet implemented on the

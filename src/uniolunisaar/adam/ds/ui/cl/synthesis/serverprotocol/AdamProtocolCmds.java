@@ -1,4 +1,4 @@
-package uniolunisaar.adam.ds.synthesis.ui.cl.serverprotocol;
+package uniolunisaar.adam.ds.ui.cl.synthesis.serverprotocol;
 
 /**
  * Specifies the possible commands the server can handle.
